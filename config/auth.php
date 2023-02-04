@@ -40,14 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'society' => [
-            'driver' => 'session',
-            'provider' => 'societies',
-        ],
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
+        ],
+        'society' => [
+            'driver' => 'session',
+            'provider' => 'societies',
         ],
     ],
 
@@ -71,11 +71,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\User::class,
         ],
         'societies' => [
             'driver' => 'eloquent',
-            'model' => App\Society::class,
+            'model' => App\Models\Society::class,
         ],
     ],
 

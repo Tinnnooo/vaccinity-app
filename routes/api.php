@@ -16,9 +16,14 @@ use App\Http\Controllers\SocietyController;
 */
 
 Route::prefix('v1')->group(function() {
-    Route::post('/auth/login', [SocietyController::class, 'login']);
+    Route::post('/auth/login', [SocietyController::class, 'login'])->name('login');
+
+    // Route::post('/auth/logout', [SocietyController::class, 'logout'])
+    // ->middleware('auth.society')
+    // ->name('logout');
 });
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function() {
-    Route::post('/logout', [SocietyController::class, 'logout'])->name('logout');
+Route::middleware(['auth.society'])->prefix('v1')->group(function() {
+    Route::post('/auth/logout', [SocietyController::class, 'logout'])->name('logout');
 });
+

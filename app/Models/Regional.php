@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Society;
+use App\Society;
 use Illuminate\Database\Eloquent\Model;
 
 class Regional extends Model
