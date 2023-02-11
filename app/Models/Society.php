@@ -45,4 +45,7 @@ class Society extends Authenticatable
         return $this->belongsTo(Regional::class);
     }
 
+    public function vaccinations(){
+        return $this->hasMany(Vaccination::class);
+    }
 }

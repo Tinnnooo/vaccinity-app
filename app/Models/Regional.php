@@ -17,4 +17,8 @@ class Regional extends Model
     {
         return $this->hasMany(Society::class);
     }
+
+    public function spots(){
+        return $this->hasMany(Spot::class);
+    }
 }
