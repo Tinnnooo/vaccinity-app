@@ -16,6 +16,10 @@ class Medical extends Model
         'name'
     ];
 
+    public function consultations(){
+        return $this->hasMany(Consultation::class, 'doctor_id');
+    }
+
     public function users(){
         return $this->hasMany(User::class);
     }
@@ -24,7 +28,7 @@ class Medical extends Model
         return $this->belongsTo(Spot::class);
     }
 
-    
+
     public function vaccinations(){
         return $this->hasMany(Vaccination::class);
     }

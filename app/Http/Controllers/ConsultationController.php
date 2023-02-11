@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Consultation;
+use App\Models\Medical;
 use App\Models\Society;
 use Illuminate\Http\Request;
 
@@ -37,13 +38,20 @@ class ConsultationController extends Controller
     public function store(Request $request)
     {
         $token = $request->input('token');
+
+        if($token === null){
+            return response()->json([
+                "message" => "Unathorized user",
+            ], 401);
+        }
+
         $society = Society::where('login_tokens', $token)->first();
 
         $data = [
             'disease_history' => $request->input('disease_history'),
             'current_symptoms' => $request->input('current_symptoms')
         ];
-        
+
         if($society){
 
             $consultation = new Consultation;
@@ -54,23 +62,79 @@ class ConsultationController extends Controller
 
             return response()->json([
                 "message" => "Request consultation sent successful",
-            ], 200);    
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Unathorized user",
+            ], 401);
         }
-
-        return response()->json([
-            "message" => "Unathorized user",
-        ], 401);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $token = $request->input('token');
+        if(!$token){
+            return response()->json([
+                "message" => "Unauthorized user"
+            ], 401);
+        }
+
+        $society = Society::where("login_tokens", $token)->first();
+
+        if($society){
+            $societyId = $society->id;
+            $consultations = Consultation::where("society_id", $societyId)->get();
+
+            if($consultations){
+                $data = [];
+                foreach($consultations as $consultation){
+                    $doctor = Medical::find($consultation->doctor_id);
+
+                    if($doctor){
+                        $data[] = [
+                            "id" => $consultation->id,
+                            "status" => $consultation->status,
+                            "disease_history" => $consultation->disease_history,
+                            "current_symptoms" => $consultation->current_symptoms,
+                            "doctor_notes" => $consultation->doctor_notes,
+                            "doctor" => [
+                                "name" => $doctor->name,
+                            ]
+                            ];
+                    } else {
+                        $data[] = [
+                            "id" => $consultation->id,
+                            "status" => $consultation->status,
+                            "disease_history" => $consultation->disease_history,
+                            "current_symptoms" => $consultation->current_symptoms,
+                            "doctor_notes" => $consultation->doctor_notes,
+                            "doctor" => [
+                                "name" => null,
+                            ]
+                            ];
+                    }
+                }
+                return response()->json([
+                    "data" => $data
+                ], 200);
+            } else {
+                return response()->json([
+                    "message" => "No consultation record found for this society",
+                ], 404);
+            }
+
+
+        };
+
+        return response()->json([
+            "message" => "Unauthorized user"
+        ], 401);
     }
 
     /**

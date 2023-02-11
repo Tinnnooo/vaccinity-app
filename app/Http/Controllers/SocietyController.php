@@ -28,9 +28,10 @@ class SocietyController extends Controller
             $society = Auth::guard('society')->user();
 
             $token = md5($society->id_card_number);
+
             $society->login_tokens = $token;
             $society->save();
-            
+
             return response()->json([
                 'name' => $society->name,
                 'born_date' => $society->born_date,
@@ -51,6 +52,11 @@ class SocietyController extends Controller
     public function logout(Request $request)
 {
     $token = $request->input('token');
+
+    if(!$token){
+        return response()->json(['message' => 'Unauthorized user'], 401);
+    }
+
     $society = Society::where('login_tokens', $token)->first();
 
     if ($society) {

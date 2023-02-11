@@ -14,7 +14,7 @@ class Consultation extends Model
         'doctor_id',
         'status',
         'disease_history',
-        'current_symtomps',
+        'current_symptoms',
         'doctor_notes'
     ];
 
@@ -23,6 +23,6 @@ class Consultation extends Model
     }
 
     public function medical(){
-        return $this->belongsTo(Medical::class);
+        return $this->belongsTo(Medical::class, 'doctor_id');
     }
 }

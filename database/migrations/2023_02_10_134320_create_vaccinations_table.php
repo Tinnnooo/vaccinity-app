@@ -13,8 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vaccinations', function (Blueprint $table) {
-            $table->id();
+        Schema::table('vaccinations', function (Blueprint $table) {
             $table->timestamps();
         });
     }
