@@ -69,4 +69,32 @@ class SocietyController extends Controller
     return response()->json(['message' => 'Unauthorized user'], 401);
 }
 
+    public function index(Request $request)
+        {
+            $token = $request->input('token');
+
+            if($token){
+                $society = Society::where('login_tokens', $token)->first();
+
+                if($society){
+                    return response()->json([
+                        "status" => "success",
+                        "message" => "ok",
+                        "data" => [
+                            "society" => [
+                                    'id_card_number' => $society->id_card_number,
+                                    'name' => $society->name,
+                                    'born-date' => $society->born,
+                                    'gender' => $society->gender,
+                                    'regional' => [
+                                        'id' => $society->regional->id,
+                                        'province' => $society->regional->province,
+                                        'district' => $society->regional->district,
+                                    ],
+                            ]
+                        ]
+                            ],200);
+                }
+            }
+        }
 }

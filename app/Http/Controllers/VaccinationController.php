@@ -167,8 +167,6 @@ class VaccinationController extends Controller
 
             if($society){
 
-
-
                 // Validate request data
                 $validator = Validator::make($request->all(), [
                     'spot_id' => 'required',
@@ -237,7 +235,7 @@ class VaccinationController extends Controller
         }
 
         return response()->json([
-            "message" => "Unauthorized user"
+            "message" => "Unauthorized users"
         ], 401);
     }
 

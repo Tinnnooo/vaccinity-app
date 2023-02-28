@@ -26,6 +26,7 @@ Route::prefix('v1')->group(function() {
     Route::get('/spots/{spot_id}', [SpotController::class, 'showSpotDetail']);
     Route::post('/vaccinations', [VaccinationController::class, 'store']);
     Route::get('/vaccinations', [VaccinationController::class, 'index']);
+    Route::get('/society', [SocietyController::class, 'index']);
 
     // Route::post('/auth/logout', [SocietyController::class, 'logout'])
     // ->middleware('auth.society')
